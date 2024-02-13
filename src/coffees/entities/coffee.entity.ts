@@ -18,10 +18,10 @@ export class Coffee {
   @Column()
   brand: string;
 
-  @JoinTable()
   @ManyToMany(
     (): typeof Flavor => Flavor,
     (flavor: Flavor): Coffee[] => flavor.coffees,
   )
+  @JoinTable()
   flavors: string[];
 }

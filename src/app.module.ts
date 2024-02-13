@@ -9,16 +9,19 @@ import { CoffeesModule } from './coffees/coffees.module';
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'ep-red-fire-a2kbykq5-pooler.eu-central-1.aws.neon.tech',
       port: 5432,
-      username: 'postgres',
-      password: 'pass123',
-      database: 'postgres',
+      username: 'hasangoli',
+      password: '5qux1eTNVgvS',
+      database: 'coffees',
       autoLoadEntities: true,
       synchronize: true,
+      ssl: true,
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+// psql 'postgresql://hasangoli:5qux1eTNVgvS@ep-red-fire-a2kbykq5-pooler.eu-central-1.aws.neon.tech/coffees?sslmode=require'
