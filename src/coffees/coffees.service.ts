@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -38,9 +39,13 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async findAll() {
+  async findAll(paginationQueryDto: PaginationQueryDto) {
+    const { limit, offset } = paginationQueryDto;
+
     const coffees = await this.coffeeRepository.find({
       relations: { flavors: true },
+      skip: offset,
+      take: limit,
     });
 
     return coffees;

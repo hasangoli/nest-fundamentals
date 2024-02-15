@@ -10,6 +10,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -25,13 +26,8 @@ export class CoffeesController {
   }
 
   @Get()
-  findAll(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
-    if (limit && offset) {
-      console.log(limit, offset);
-    }
-
-    return this.coffeeService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.coffeeService.findAll(paginationQuery);
   }
 
   @Get(':id')
