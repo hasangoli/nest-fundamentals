@@ -19,12 +19,13 @@ export class CoffeesService {
     private readonly connection: Connection,
     private readonly configService: ConfigService,
   ) {
-    const databaseHost = this.configService.get<string>('DATABASE_USER');
+    const databaseHost: string =
+      this.configService.get<string>('DATABASE_USER');
     console.log(databaseHost);
   }
 
   private async preloadFlavorByName(name: string): Promise<Flavor> {
-    const existingFlavor = await this.flavorRepository.findOne({
+    const existingFlavor: Flavor = await this.flavorRepository.findOne({
       where: { name },
     });
 
@@ -33,7 +34,7 @@ export class CoffeesService {
     return this.flavorRepository.create({ name });
   }
 
-  async recommendCoffee(coffee: Coffee) {
+  async recommendCoffee(coffee: Coffee): Promise<void> {
     const queryRunner = this.connection.createQueryRunner();
 
     await queryRunner.connect();
@@ -58,9 +59,11 @@ export class CoffeesService {
     }
   }
 
-  async create(createCoffeeDto: CreateCoffeeDto) {
-    const flavors = await Promise.all(
-      createCoffeeDto.flavors.map((flavor) => this.preloadFlavorByName(flavor)),
+  async create(createCoffeeDto: CreateCoffeeDto): Promise<Coffee> {
+    const flavors: Flavor[] = await Promise.all(
+      createCoffeeDto.flavors.map(
+        (flavor: string): Promise<Flavor> => this.preloadFlavorByName(flavor),
+      ),
     );
 
     const coffee = this.coffeeRepository.create({
@@ -71,10 +74,10 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async findAll(paginationQueryDto: PaginationQueryDto) {
+  async findAll(paginationQueryDto: PaginationQueryDto): Promise<Coffee[]> {
     const { limit, offset } = paginationQueryDto;
 
-    const coffees = await this.coffeeRepository.find({
+    const coffees: Coffee[] = await this.coffeeRepository.find({
       relations: { flavors: true },
       skip: offset,
       take: limit,
@@ -83,7 +86,7 @@ export class CoffeesService {
     return coffees;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Coffee> {
     const coffee = await this.coffeeRepository.findOne({
       where: { id: +id },
       relations: { flavors: true },
@@ -95,12 +98,12 @@ export class CoffeesService {
     return coffee;
   }
 
-  async update(id: string, updateCoffeeDto: UpdateCoffeeDto) {
-    const flavors =
+  async update(id: string, updateCoffeeDto: UpdateCoffeeDto): Promise<Coffee> {
+    const flavors: Flavor[] =
       updateCoffeeDto.flavors &&
       (await Promise.all(
-        updateCoffeeDto.flavors.map((flavor) =>
-          this.preloadFlavorByName(flavor),
+        updateCoffeeDto.flavors.map(
+          (flavor: string): Promise<Flavor> => this.preloadFlavorByName(flavor),
         ),
       ));
 
@@ -116,7 +119,7 @@ export class CoffeesService {
     return this.coffeeRepository.save(coffee);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<Coffee> {
     const coffee = await this.coffeeRepository.findOne({ where: { id: +id } });
 
     if (!coffee)

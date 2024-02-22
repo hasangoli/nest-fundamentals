@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CommonModule } from './common/common.module';
 
@@ -32,7 +31,6 @@ import { CommonModule } from './common/common.module';
       synchronize: true,
       ssl: true,
     }),
-    CoffeeRatingModule,
     CommonModule,
   ],
   controllers: [AppController],

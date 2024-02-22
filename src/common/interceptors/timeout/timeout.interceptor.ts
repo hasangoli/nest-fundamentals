@@ -16,6 +16,8 @@ import {
 @Injectable()
 export class TimeoutInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    console.log('Logging context in timeout.interceptor: ', context);
+
     return next.handle().pipe(
       timeout(3000),
       catchError((err: any): Observable<never> => {
