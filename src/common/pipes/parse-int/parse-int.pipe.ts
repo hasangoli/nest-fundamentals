@@ -8,6 +8,8 @@ import {
 @Injectable()
 export class ParseIntPipe implements PipeTransform {
   transform(value: string, metadata: ArgumentMetadata): number {
+    console.log('Log metadata in parse-int.pipe: ', metadata);
+
     const val: number = parseInt(value, 10);
 
     if (isNaN(val))
