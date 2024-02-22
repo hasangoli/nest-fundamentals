@@ -10,6 +10,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiForbiddenResponse } from '@nestjs/swagger';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -29,6 +30,8 @@ export class CoffeesController {
     return this.coffeeService.create(createCoffeeDto);
   }
 
+  // @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   @Public()
   @Get()
   async findAll(
