@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { TimeoutInterceptor } from './common/interceptors/timeout/timeout.interceptor';
 import { WrapResponseInterceptor } from './common/interceptors/wrap-response/wrap-response.interceptor';
 
 async function bootstrap(): Promise<void> {
@@ -22,7 +23,10 @@ async function bootstrap(): Promise<void> {
 
   // app.useGlobalGuards(new ApiKeyGuard());
 
-  app.useGlobalInterceptors(new WrapResponseInterceptor());
+  app.useGlobalInterceptors(
+    new WrapResponseInterceptor(),
+    new TimeoutInterceptor(),
+  );
 
   await app.listen(3000);
 }
