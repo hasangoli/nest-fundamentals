@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -19,16 +20,19 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
 
+@ApiTags('coffees')
 @UsePipes(ValidationPipe)
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     return this.coffeesService.create(createCoffeeDto);
   }
 
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Public()
   @UsePipes(ValidationPipe)
   @Get()
