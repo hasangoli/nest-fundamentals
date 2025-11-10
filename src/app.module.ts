@@ -7,6 +7,8 @@ import appConfig from 'config/app.config';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { CoffeesModule } from './coffees/coffees.module';
 import { CommonModule } from './common/common.module';
+import { UsersModule } from './users/users.module';
+import { IamModule } from './iam/iam.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { CommonModule } from './common/common.module';
     CommonModule,
     CoffeesModule,
     CoffeeRatingModule,
+    UsersModule,
+    IamModule,
   ],
   providers: [
     {

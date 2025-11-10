@@ -15,6 +15,8 @@ import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import type { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
@@ -37,9 +39,11 @@ export class CoffeesController {
   @UsePipes(ValidationPipe)
   @Get()
   findAll(
+    @ActiveUser() user: ActiveUserData,
     @Protocol('https') protocol,
     @Query() paginationQueryDto: PaginationQueryDto,
   ): Promise<Coffee[]> {
+    console.log('User: ', user);
     console.log('Protocol: ', protocol);
     return this.coffeesService.findAll(paginationQueryDto);
   }
